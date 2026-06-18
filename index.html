@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>She-Wolf Training App</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        newman: {
+                            black: '#0a0a0a',
+                            card: '#161616',
+                            red: '#D00000',
+                            redHover: '#b30000',
+                            border: '#2a2a2a'
+                        }
+                    },
+                    fontFamily: {
+                        brand: ['Oswald', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            overscroll-behavior-y: none; /* Prevents pull-to-refresh on mobile */
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        /* Hide scrollbar for a cleaner app feel */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        .slide-up {
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .slide-up.active {
+            transform: translateY(0);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="flex justify-center h-screen w-full">
+
+    <!-- Mobile App Container -->
+    <div class="w-full max-w-md bg-newman-black h-full flex flex-col relative shadow-2xl overflow-hidden border-x border-newman-border">
+        
+        <!-- App Header -->
+        <header class="pt-10 pb-4 px-5 bg-gradient-to-b from-black to-newman-black border-b border-newman-border z-10 shrink-0">
+            <div class="flex justify-between items-center mb-1">
+                <h1 class="font-brand text-3xl font-bold uppercase tracking-tighter">Newman<span class="text-newman-red">Rugby</span></h1>
+                <div class="w-8 h-8 rounded-full bg-newman-border flex items-center justify-center">
+                    <span class="text-lg">🐺</span>
+                </div>
+            </div>
+            <h2 class="text-xs text-gray-400 font-bold tracking-widest uppercase">She-Wolf Protocol V2.2</h2>
+        </header>
+
+        <!-- Month Navigation Tabs -->
+        <nav class="flex px-5 py-4 gap-3 shrink-0 overflow-x-auto bg-newman-black border-b border-newman-border" id="tab-container">
+            <!-- Tabs injected by JS -->
+        </nav>
+
+        <!-- Phase Info Banner -->
+        <div class="px-5 pt-4 shrink-0 fade-in" id="phase-banner">
+            <!-- Phase injected by JS -->
+        </div>
+
+        <!-- Main Content Area (Scrollable) -->
+        <main class="flex-1 overflow-y-auto px-5 pt-4 pb-24 space-y-5" id="session-container">
+            <!-- Sessions injected by JS -->
+        </main>
+
+        <!-- Floating Warm-Up Button -->
+        <button onclick="toggleWarmup()" class="absolute bottom-6 right-5 bg-newman-red hover:bg-newman-redHover text-white rounded-full h-14 px-6 flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(208,0,0,0.4)] transition-transform active:scale-95 z-40">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            <span class="font-bold text-sm tracking-wider uppercase">Warm-Up</span>
+        </button>
+
+        <!-- Warm-Up Bottom Sheet Modal -->
+        <div id="warmup-modal" class="absolute inset-0 z-50 pointer-events-none flex flex-col justify-end">
+            <!-- Backdrop -->
+            <div id="warmup-backdrop" onclick="toggleWarmup()" class="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300"></div>
+            
+            <!-- Sheet Content -->
+            <div id="warmup-sheet" class="bg-newman-card border-t border-newman-border w-full rounded-t-3xl slide-up relative flex flex-col max-h-[85vh]">
+                <div class="p-5 flex justify-between items-center border-b border-newman-border shrink-0">
+                    <div>
+                        <h3 class="font-brand text-xl font-bold uppercase text-white">7-Min Armor Circuit</h3>
+                        <p class="text-[10px] text-newman-red font-bold uppercase tracking-widest">Mandatory Standardized Warm-Up</p>
+                    </div>
+                    <button onclick="toggleWarmup()" class="w-8 h-8 rounded-full bg-newman-border flex items-center justify-center text-gray-400 hover:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+                <div class="p-5 overflow-y-auto space-y-3" id="warmup-list">
+                    <!-- Warmup items injected by JS -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        // --- DATA ---
+        const ARMOR_CIRCUIT = [
+            { name: "1. Tib Raises", reps: "20 reps", focus: "Ankle/Achilles armor against turf friction." },
+            { name: "2. SL Calf Raises", reps: "15/leg", focus: "Lower leg resilience and ankle stiffness." },
+            { name: "3. Cossack Squats", reps: "8/side", focus: "Unlocks adductors for multi-directional cutting." },
+            { name: "4. Lu Raises", reps: "15 reps", focus: "Unlocks and protects against shoulder impingement." },
+            { name: "5. Neck Isometrics", reps: "15s/way", focus: "Concussion armor & whiplash mitigation." },
+            { name: "6. Bear Crawls", reps: "20m", focus: "Trunk stability & shoulder integration." },
+            { name: "7. Spring Ankle Holds", reps: "10s Low / 10s High", focus: "Ankle stiffness & tendon prep. Drive big toe to floor." },
+            { name: "8. Wrist Ext. Isos", reps: "2x 20s", focus: "Rubber band. Bulletproofs lateral elbows." }
+        ];
+
+        const WOLFPACK_DATA = [
+            {
+                id: 0, tabLabel: "JUN / JUL",
+                block: "PHASE 1: FOUNDATIONS", 
+                intent: "Cementing the basics of extreme isometrics, deceleration, and 3x2 absolute force.",
+                sessions: [
+                    {
+                        day: "SESSION A", title: "ISO PRIMER & STRENGTH",
+                        exercises: [
+                            { name: "A1. Extreme Iso Lunge", sets: "1", reps: "60-90s/leg", rest: "None", notes: "Primer: Active pull! Front hamstring pulls back, DRIVE BIG TOE TO FLOOR to lock glute." },
+                            { name: "A2. Extreme Iso Push-Up", sets: "1", reps: "60s", rest: "90s", notes: "Primer: Actively pull hands into floor. Drive big toes to floor for core tension." },
+                            { name: "B. Depth Drops (Box: ___\")", sets: "4", reps: "10", rest: "60s", notes: "Absorption: Write in box height used. Land silently. Knees OUT. Drive big toes to floor." },
+                            { name: "C1. Trap Bar Deadlift", sets: "3", reps: "2", rest: "2m", notes: "Concentric: CNS is primed. Fast off the floor. DRIVE BIG TOES TO FLOOR." },
+                            { name: "C2. Bottom-Up KB Press", sets: "3", reps: "5/arm", rest: "2m", notes: "Armor: Supreme rotator cuff stability. Drive opposite big toe to floor to lock pelvis." }
+                        ]
+                    },
+                    {
+                        day: "SESSION B", title: "DYNAMIC ECCENTRICS",
+                        exercises: [
+                            { name: "A1. Iso Lunge w/ Curl Press", sets: "1", reps: "60s/leg", rest: "None", notes: "Primer: Neuromuscular multitasking. Drive big toe to floor to anchor your balance." },
+                            { name: "A2. Scap Hangs", sets: "1", reps: "60s", rest: "90s", notes: "Primer: Active lat engagement. Decompress the shoulder." },
+                            { name: "B. Banded Drop-Catch RDL", sets: "4", reps: "5", rest: "60s", notes: "Absorption: Light band. Pull bar down instantly & brake hard. Big toes rooted." },
+                            { name: "C1. Medball Rotational Toss", sets: "3", reps: "6/side", rest: "60s", notes: "Concentric Power: Throw to break the wall. Drive back big toe to floor to transfer force." },
+                            { name: "C2. Renegade Rows", sets: "3", reps: "6/side", rest: "90s", notes: "Armor: Anti-rotation. Press one bell into floor, row the other. Drive toes into floor." }
+                        ]
+                    },
+                    {
+                        day: "SESSION C", title: "GYM PREP & ACCELERATION",
+                        exercises: [
+                            { name: "A. Lateral Skater Jumps", sets: "3", reps: "4/leg", rest: "60s", notes: "Absorption: Max lateral push. Stick landing with Knees OUT & big toe engaged." },
+                            { name: "B. Broad Jumps", sets: "4", reps: "3", rest: "60s", notes: "Power: Stick the landing silently for a full 2 seconds. Big toes grip the floor." },
+                            { name: "C. Banded Broad Jumps", sets: "5", reps: "3", rest: "2m", notes: "Max Velocity Gym Alternative: Explode horizontally against band. Drive big toes to floor." },
+                            { name: "D. Heavy Suitcase Carry", sets: "3", reps: "20m/side", rest: "60s", notes: "Armor: Anti-lateral flexion. Keep pelvis neutral. Active foot strike." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 1, tabLabel: "AUGUST",
+                block: "PHASE 2: ABSORPTION PEAK", 
+                intent: "Pushing isometric hold durations and building tolerance to high-volume deceleration.",
+                sessions: [
+                    {
+                        day: "SESSION A", title: "POSITION TOLERANCE",
+                        exercises: [
+                            { name: "A1. Extreme Iso Lunge", sets: "1", reps: "2-3m/leg", rest: "None", notes: "Primer: Pushing the limit. Maintain 90 degrees. DRIVE BIG TOE TO FLOOR." },
+                            { name: "A2. Extreme Iso Push-Up", sets: "1", reps: "90s-2m", rest: "2m", notes: "Primer: Max tension. Core braced, active pull into ground. Toes rooted." },
+                            { name: "B. Depth Drops (Box: ___\")", sets: "4", reps: "20", rest: "90s", notes: "Absorption: High volume. Write in box height. Mimicking 17,000 match steps. Silent landing." },
+                            { name: "C1. Trap Bar Deadlift", sets: "3", reps: "2", rest: "3m", notes: "Concentric: Max Force. Nervous system uninhibited. DRIVE BIG TOES TO FLOOR." },
+                            { name: "C2. Heavy OH Press", sets: "3", reps: "2", rest: "3m", notes: "Concentric: Absolute force. Drive through legs, stiff core, root the big toe." }
+                        ]
+                    },
+                    {
+                        day: "SESSION B", title: "REBOUND & MULTITASK",
+                        exercises: [
+                            { name: "A. Iso Lunge w/ Curl Press", sets: "1", reps: "2m/leg", rest: "2m", notes: "Primer: Brain separates upper body tasks from lower body stability. Big toe down." },
+                            { name: "B. Drop Lunges (Box: ___\")", sets: "4", reps: "5/leg", rest: "60s", notes: "Absorption: Step off box into split lunge. Decelerate instantly. Root front big toe." },
+                            { name: "C1. Rebound Jumps", sets: "4", reps: "5", rest: "90s", notes: "Transfer: Quick transition from eccentric stretch to concentric jump." },
+                            { name: "C2. Weighted Chin Up", sets: "3", reps: "2", rest: "90s", notes: "Concentric: Heavy pulling. Lats and biceps." },
+                            { name: "D. Renegade Rows", sets: "3", reps: "8/side", rest: "60s", notes: "Armor: Upper body bulletproofing for the breakdown. Drive toes to floor." }
+                        ]
+                    },
+                    {
+                        day: "SESSION C", title: "PEAK NEURAL TRANSFER",
+                        exercises: [
+                            { name: "A. Scap Hangs", sets: "1", reps: "90s", rest: "None", notes: "Primer: Decompress spine before plyos." },
+                            { name: "B. Hurdle Hops", sets: "3", reps: "4", rest: "60s", notes: "Transfer: Squeeze glutes to neutral pelvis on landing. Rhythm. Big toe engaged." },
+                            { name: "C. Banded Broad Jumps", sets: "5", reps: "3", rest: "90s", notes: "Sprint Transfer: Max horizontal intent against resistance. Drive big toe to floor." },
+                            { name: "D. Nordic Lowers", sets: "3", reps: "4", rest: "60s", notes: "Armor: ACL Focus. Strict 5-second eccentric lowering. Anchor the feet." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 2, tabLabel: "SEP / OCT",
+                block: "PHASE 3: IN-SEASON (MED)", 
+                intent: "Minimum Effective Dose. Managing match fatigue, recovering tissue, and maintaining force ceilings.",
+                sessions: [
+                    {
+                        day: "MON/TUE: SESSION A", title: "POST-MATCH TRIAGE",
+                        exercises: [
+                            { name: "A. Zone 1 Bike/Row", sets: "1", reps: "15m", rest: "None", notes: "Flush the legs. Nasal breathing only." },
+                            { name: "B. Extreme Iso Lunge", sets: "1", reps: "45s/leg", rest: "60s", notes: "Recovery Dose: Pull inflammation out of joints. Gentle big toe drive." },
+                            { name: "C1. Bear Crawls", sets: "3", reps: "15m", rest: "30s", notes: "Gentle trunk integration." },
+                            { name: "C2. Band Pull Aparts", sets: "3", reps: "25", rest: "30s", notes: "Upper back blood flow." },
+                            { name: "D. Scap Hang (Passive)", sets: "1", reps: "60s", rest: "-", notes: "Relax and decompress." }
+                        ]
+                    },
+                    {
+                        day: "WED/THU: SESSION B", title: "NEURAL MAINTENANCE",
+                        exercises: [
+                            { name: "A1. Extreme Iso Lunge", sets: "1", reps: "90s/leg", rest: "None", notes: "Primer: GTO desensitization. Drive big toe to floor." },
+                            { name: "A2. Extreme Iso Push-Up", sets: "1", reps: "60s", rest: "60s", notes: "Primer: Upper body stability. Toes rooted." },
+                            { name: "B. Depth Drops (Box: ___\")", sets: "3", reps: "5", rest: "60s", notes: "Absorption: Low Volume CNS Primer. Write in height used. Fast, quiet, precise." },
+                            { name: "C1. Trap Bar Deadlift", sets: "2", reps: "2", rest: "2m", notes: "Concentric: ~85%. Leave reps in the tank. DRIVE BIG TOES TO FLOOR." },
+                            { name: "C2. Bottom-Up KB Press", sets: "2", reps: "4/arm", rest: "2m", notes: "Concentric/Armor: Shoulder stability preservation. Anchor opposite toe." }
+                        ]
+                    },
+                    {
+                        day: "FRIDAY: SESSION C", title: "PRE-MATCH PRIMER",
+                        exercises: [
+                            { name: "A. Neck Isometrics", sets: "3", reps: "15s/way", rest: "None", notes: "Concussion prep. Activate the cervical spine." },
+                            { name: "B. Banded Broad Jumps", sets: "4", reps: "3", rest: "60s", notes: "Fire the CNS. Pure horizontal acceleration. Drive big toe to floor." },
+                            { name: "C. Drop-Catch RDL", sets: "2", reps: "5", rest: "60s", notes: "Light weight. Fast snap. Wake up the hamstrings." },
+                            { name: "D. Medball Rotations", sets: "2", reps: "5/side", rest: "60s", notes: "Activate transverse plane for tackling. Root the back toe." }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        let currentTabId = 0;
+
+        // --- RENDER LOGIC ---
+        function renderTabs() {
+            const container = document.getElementById('tab-container');
+            container.innerHTML = WOLFPACK_DATA.map(data => `
+                <button onclick="switchTab(${data.id})" class="whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-colors ${currentTabId === data.id ? 'bg-newman-red text-white' : 'bg-newman-card text-gray-400 border border-newman-border'}">
+                    ${data.tabLabel}
+                </button>
+            `).join('');
+        }
+
+        function renderPhaseBanner() {
+            const data = WOLFPACK_DATA.find(d => d.id === currentTabId);
+            const container = document.getElementById('phase-banner');
+            
+            // Re-trigger animation
+            container.classList.remove('fade-in');
+            void container.offsetWidth; // trigger reflow
+            container.classList.add('fade-in');
+
+            container.innerHTML = `
+                <div class="bg-newman-card border border-newman-border rounded-xl p-4 relative overflow-hidden">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-newman-red"></div>
+                    <div class="pl-2">
+                        <span class="text-[10px] text-newman-red font-bold tracking-widest uppercase block mb-1">${data.block}</span>
+                        <p class="text-xs text-gray-300 leading-snug">${data.intent}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSessions() {
+            const data = WOLFPACK_DATA.find(d => d.id === currentTabId);
+            const container = document.getElementById('session-container');
+            
+            container.innerHTML = data.sessions.map(session => `
+                <div class="bg-newman-card border border-newman-border rounded-xl overflow-hidden fade-in shadow-lg">
+                    <div class="bg-gradient-to-r from-[#1a0505] to-newman-card p-4 border-b border-newman-border">
+                        <span class="text-[10px] text-gray-400 font-bold tracking-widest uppercase">${session.day}</span>
+                        <h3 class="font-brand text-xl font-bold uppercase text-white mt-0.5">${session.title}</h3>
+                    </div>
+                    <div class="p-4 space-y-4">
+                        ${session.exercises.map(ex => `
+                            <div class="border-b border-newman-border/50 pb-3 last:border-0 last:pb-0">
+                                <h4 class="text-sm font-bold text-gray-100">${ex.name}</h4>
+                                <div class="flex gap-2 mt-2 mb-2">
+                                    <span class="bg-black border border-newman-border text-gray-300 text-[10px] font-bold px-2 py-1 rounded">
+                                        Sets/Reps: <span class="text-newman-red">${ex.sets} × ${ex.reps}</span>
+                                    </span>
+                                    <span class="bg-black border border-newman-border text-gray-300 text-[10px] font-bold px-2 py-1 rounded">
+                                        Rest: <span class="text-white">${ex.rest}</span>
+                                    </span>
+                                </div>
+                                <p class="text-[11px] text-gray-400 leading-snug"><span class="text-newman-red font-bold">Note:</span> ${ex.notes}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderWarmup() {
+            const container = document.getElementById('warmup-list');
+            container.innerHTML = ARMOR_CIRCUIT.map(ex => `
+                <div class="bg-black border border-newman-border rounded-lg p-3 flex flex-col justify-center">
+                    <div class="flex justify-between items-start mb-1">
+                        <span class="text-sm font-bold text-white">${ex.name}</span>
+                        <span class="text-xs font-black text-newman-red bg-newman-red/10 px-2 py-0.5 rounded">${ex.reps}</span>
+                    </div>
+                    <p class="text-[10px] text-gray-400 leading-snug">${ex.focus}</p>
+                </div>
+            `).join('');
+        }
+
+        // --- INTERACTIONS ---
+        function switchTab(id) {
+            currentTabId = id;
+            renderTabs();
+            renderPhaseBanner();
+            renderSessions();
+            
+            // Scroll to top of sessions smoothly
+            document.getElementById('session-container').scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        let isWarmupOpen = false;
+        function toggleWarmup() {
+            const modal = document.getElementById('warmup-modal');
+            const backdrop = document.getElementById('warmup-backdrop');
+            const sheet = document.getElementById('warmup-sheet');
+
+            isWarmupOpen = !isWarmupOpen;
+
+            if (isWarmupOpen) {
+                modal.classList.remove('pointer-events-none');
+                backdrop.classList.remove('opacity-0');
+                backdrop.classList.add('opacity-100');
+                sheet.classList.add('active');
+            } else {
+                backdrop.classList.remove('opacity-100');
+                backdrop.classList.add('opacity-0');
+                sheet.classList.remove('active');
+                setTimeout(() => {
+                    modal.classList.add('pointer-events-none');
+                }, 300); // Wait for transition
+            }
+        }
+
+        // Initialize App
+        window.onload = () => {
+            renderTabs();
+            renderPhaseBanner();
+            renderSessions();
+            renderWarmup();
+        };
+
+    </script>
+</body>
+</html>
